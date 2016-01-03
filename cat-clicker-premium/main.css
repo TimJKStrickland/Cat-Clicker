@@ -7,9 +7,11 @@ body {
 	display: inline-block;
 	list-style: none;
 	font-size: 3em;
+	float: left;
 
 }
 .catDisplay {
 	width: 200px;
-	display: inline-block;
+	float: right;
+	visibility: hidden;
 }
