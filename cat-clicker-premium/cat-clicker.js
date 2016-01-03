@@ -1,5 +1,6 @@
 // Model
 var model = {
+  adminViewState: false,
   currentCat: null,
   cats: [
     {
@@ -47,10 +48,21 @@ var octopus = {
     // tells our view to initialize..what does initialize mean?
     catListView.init();
     catView.init();
+    adminView.init();
   },
   getCurrentCat: function(){
     return model.currentCat;
 
+  },
+  {
+    setAdminView: function(){
+      return model.adminView;
+    }
+  },
+  {
+    getAdminView: function(newView){
+      return newView = model.setAdminView;
+    }
   },
   getCats: function(){
     return model.cats;
@@ -67,7 +79,27 @@ var octopus = {
 };
 
 // view
+var adminView = {
+  init: function(){
+      this.adminElem = document.getElementById('admin');
+      this.adminNamElem = document.getElementById('admin-catName');
+      this.adminClickElem = document.getElementById('admin-clicks');
+      this.adminUrlElem = document.getElementById('admin-url');
+      this.adminCancelElem = document.getElementById('admin-cancel');
+// admin button to get the the inputs to show up.
+      this.adminElem.addEventListener('click', function(){
+        adminView.toggleAdminViewState();
+      });
+      // input form to make sure that a thing does the thing it needs to
+      this.render();
+  },
+  render: function(){
 
+    this.adminNamElem.textContent = currentCat.name;
+    this.adminUrlElem.textContent = currentCat.url;
+    this.adminClickElem.textContent = currentCat.catClicks;
+  }
+};
 var catView = {
   init: function(){
     // stores pointers to DOM elements for cached access later
