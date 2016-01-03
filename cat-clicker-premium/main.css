@@ -2,16 +2,14 @@ body {
 	width: 95%;
 	margin: auto;
 }
-.cats {
+#cat {
 	padding: 10px;
 	display: inline-block;
 	list-style: none;
 	font-size: 3em;
 	float: left;
-
 }
-.catDisplay {
+#cat-image {
 	width: 200px;
 	float: right;
-	visibility: hidden;
 }
