@@ -40,7 +40,7 @@ var model = {
     }
   ]
 };
-// Octopus
+/*------------/ Octopus------------*/
 var octopus = {
   init: function(){
     // this sets the currentCat view to the first in array
@@ -52,17 +52,12 @@ var octopus = {
   },
   getCurrentCat: function(){
     return model.currentCat;
-
   },
-  {
-    setAdminView: function(){
+  getAdminView: function(){
       return model.adminView;
-    }
   },
-  {
-    getAdminView: function(newView){
-      return newView = model.setAdminView;
-    }
+  setAdminView: function(newView){
+    return newView = model.setAdminView;
   },
   getCats: function(){
     return model.cats;
@@ -75,7 +70,12 @@ var octopus = {
   incrementCounter: function(){
     model.currentCat.catClicks++;
     catView.render();
-  }
+  },
+  updateCat: function(newCat){
+      model.currentCat.name = newCat.name;
+      model.currentCat.url = newCat.url;
+      model.currentCat.catClicks = newCat.catClicks;
+    }
 };
 
 // view
@@ -86,18 +86,39 @@ var adminView = {
       this.adminClickElem = document.getElementById('admin-clicks');
       this.adminUrlElem = document.getElementById('admin-url');
       this.adminCancelElem = document.getElementById('admin-cancel');
+      this.adminSubmitElem = document.getElementById('admin-submit');
 // admin button to get the the inputs to show up.
       this.adminElem.addEventListener('click', function(){
+        adminView.toggleAdminViewState();
+      });
+      // submit form
+      this.adminSubmitElem.addEventListener('submit', function(e){
+        e.preventDefault();
+        adminView.handleFormSave();
+      });
+      this.admin-cancel.addEventListener('cancel', function(e){
+        e.preventDefault();
         adminView.toggleAdminViewState();
       });
       // input form to make sure that a thing does the thing it needs to
       this.render();
   },
   render: function(){
-
-    this.adminNamElem.textContent = currentCat.name;
-    this.adminUrlElem.textContent = currentCat.url;
-    this.adminClickElem.textContent = currentCat.catClicks;
+    var currentCat = octopus.getCurrentCat();
+    this.adminNamElem.textContent = newCat.name;
+    this.adminUrlElem.textContent = newCat.url;
+    this.adminClickElem.textContent = newCat.catClicks;
+  },
+  toggleAdminViewState: function() {
+    octopus.setAdminView(!octopus.getAdminView);
+    var state = octopus.getAdminView();
+    if(!state){
+      this.admin.textContent = 'Show Admin Value';
+      this.adminView.classList.add('hide');
+    } else {
+      this.admin.textContent = "Hide Admin View";
+      this.adminView.classList.remove('hide');
+    }
   }
 };
 var catView = {
@@ -119,8 +140,23 @@ var catView = {
     this.countElem.textContent = currentCat.catClicks;
     this.catImageElem.src = currentCat.url;
     this.catNameElem.textContent = currentCat.name;
-  }
+  },
+  handleFormSave: function(){
+      var nameEl = document.getElementById('admin-catName');
+      var imgEl = document.getElementById('admin-url');
+      var countEl = document.getElementById('admin-clicks');
+      newCat = {};
+      // update the currentCat model
+      newCat.name = nameEl.value;
+      newCat.url = imgEl.value;
+      newCat.caClicks = countEl.value;
 
+      octopus.updateCat(newCat);
+
+      // re-render sections
+      catListView.render();
+      catView.render();
+  }
 };
 var catListView = {
   init: function(){
